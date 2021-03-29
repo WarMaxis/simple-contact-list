@@ -3,31 +3,22 @@ import React from "react";
 import {PersonData} from "./types";
 
 type Props = {
-  data: Omit<PersonData, "id">;
+    data: PersonData;
+    selected?: boolean;
+    onCardClick: (id: string, selected?: boolean) => void;
 };
 
-function PersonInfo(props: Props) {
-  const { data } = props;
-  return (
-    <div
-      style={{
-        display: "flex",
-        height: "100px",
-        justifyContent: "center",
-        flexDirection: "column",
-        padding: "32px",
-        boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.15)",
-        margin: "10px 0",
-        background: "#fff",
-        cursor: "pointer",
-      }}
-      className="person-info"
-    >
-      <div className="firstNameLastName">{data.firstNameLastName}</div>
-      <div className="jobTitle">{data.jobTitle}</div>
-      <div className="emailAddress">{data.emailAddress}</div>
-    </div>
-  );
-}
+const PersonInfo = React.memo((props: Props) => {
+    const {data, selected, onCardClick} = props;
+
+    return (
+        <div className={`person-info ${selected ? 'person-info--selected' : ''}`}
+             onClick={() => onCardClick(data.id, selected)}>
+            <div className="firstNameLastName">{data.firstNameLastName}</div>
+            <div className="jobTitle">{data.jobTitle}</div>
+            <div className="emailAddress">{data.emailAddress}</div>
+        </div>
+    );
+});
 
 export default PersonInfo;

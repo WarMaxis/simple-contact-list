@@ -1,17 +1,17 @@
-import React, {useEffect, useCallback, useMemo} from "react";
+import React from "react";
 
-import apiData from "./api";
 import PersonInfo from "./PersonInfo";
+import apiData from "./api";
 
 import {PersonData} from "./types";
 
 function App() {
     const [data, setData] = React.useState<PersonData[]>([]);
-    const [selected, setSelected] = React.useState([]);
+    const [selected, setSelected] = React.useState<string[]>([]);
     const [isLoader, setIsLoader] = React.useState(false);
     const [isError, setIsError] = React.useState(false);
 
-    const fetchData = useCallback(async (mergeResults?: boolean) => {
+    const fetchData = React.useCallback(async (mergeResults?: boolean) => {
         setIsLoader(true);
         setIsError(false);
 
@@ -27,12 +27,16 @@ function App() {
         }
     }, []);
 
-    const buttonPart = useMemo(() => <button className="button" onClick={() => fetchData(true)}>Load
+    const handleSelect = React.useCallback((cardId: string, selected?: boolean) => {
+        selected ? setSelected(prevState => prevState.filter(id => cardId !== id)) : setSelected(prevState => [...prevState, cardId])
+    }, [])
+
+    const buttonPart = React.useMemo(() => <button className="button" onClick={() => fetchData(true)}>Load
         more</button>, [fetchData]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         fetchData();
-    }, []);
+    }, [fetchData]);
 
     return (
         <div className="App">
@@ -47,12 +51,21 @@ function App() {
                 )}
             </div>)
             }
+
             <div className="selected">Selected contacts: {selected.length}</div>
+
             <div className="list">
-                {data.map((personInfo) => (
-                    // @ts-ignore
-                    <PersonInfo key={personInfo.id} data={personInfo}/>
+                {!!selected.length && <>
+                    {data.filter(item => selected.includes(item.id)).map((personInfo) => (
+                        <PersonInfo key={personInfo.id} data={personInfo} onCardClick={handleSelect} selected/>
+                    ))}
+                    <hr/>
+                </>}
+
+                {data.filter(item => !selected.includes(item.id)).map((personInfo) => (
+                    <PersonInfo key={personInfo.id} data={personInfo} onCardClick={handleSelect}/>
                 ))}
+
                 {!!data.length && buttonPart}
             </div>
         </div>
