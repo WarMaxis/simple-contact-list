@@ -65,7 +65,7 @@ code {
 }
 
 .loader {
-    color: #e74c3c;
+    color: orange;
     font-size: 20px;
     margin: 100px auto;
     width: 1em;
@@ -145,4 +145,10 @@ code {
     border-radius: 5px;
     font-size: 18px;
     cursor: pointer;
+}
+
+.error-container {
+    background-color: white;
+    padding: 50px;
+    border-radius: 10px;
 }

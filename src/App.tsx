@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback} from "react";
+import React, {useEffect, useCallback, useMemo} from "react";
 
 import apiData from "./api";
 import PersonInfo from "./PersonInfo";
@@ -8,21 +8,27 @@ import {PersonData} from "./types";
 function App() {
     const [data, setData] = React.useState<PersonData[]>([]);
     const [selected, setSelected] = React.useState([]);
-    const [isLoader, setLoader] = React.useState(false);
+    const [isLoader, setIsLoader] = React.useState(false);
+    const [isError, setIsError] = React.useState(false);
 
     const fetchData = useCallback(async (mergeResults?: boolean) => {
-        setLoader(true);
+        setIsLoader(true);
+        setIsError(false);
 
         try {
             const fetchedData = await apiData();
 
-            setLoader(false);
+            setIsLoader(false);
 
             mergeResults ? setData(prevState => [...prevState, ...fetchedData]) : setData(fetchedData)
         } catch {
-            setLoader(false);
+            setIsLoader(false);
+            setIsError(true);
         }
     }, []);
+
+    const buttonPart = useMemo(() => <button className="button" onClick={() => fetchData(true)}>Load
+        more</button>, [fetchData]);
 
     useEffect(() => {
         fetchData();
@@ -30,9 +36,15 @@ function App() {
 
     return (
         <div className="App">
-            {isLoader &&
+            {(isLoader || isError) &&
             (<div className="overlay">
-                <div className="loader"/>
+                {isLoader && <div className="loader"/>}
+                {isError && (
+                    <div className="error-container">
+                        <div>Oops, something went wrong, please try again :)</div>
+                        {buttonPart}
+                    </div>
+                )}
             </div>)
             }
             <div className="selected">Selected contacts: {selected.length}</div>
@@ -41,7 +53,7 @@ function App() {
                     // @ts-ignore
                     <PersonInfo key={personInfo.id} data={personInfo}/>
                 ))}
-                {!!data.length && <button className="button" onClick={() => fetchData(true)}>Load more</button>}
+                {!!data.length && buttonPart}
             </div>
         </div>
     );
