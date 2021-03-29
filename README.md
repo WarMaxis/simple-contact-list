@@ -1,27 +1,3 @@
-# TODO
-
-Please do not fork the repo, clone it instead.
-
-Definition of done:
-
-1. Fetch contacts using `apiData` function. Contacts are paginated (50 items in batch).
-2. "Load more" button is positioned at the bottom of the list. It fetches next batch and appends it to the existing list.
-3. Loading state is handled, display some kind of spinner / loader.
-4. Error state is handled. It allows to refetch failed batch.
-5. Each contact information card is selectable.
-6. Selected contacts have outline around them.
-7. Selected card can be deselected.
-8. Selected contacts are displayed at the top of the list.
-9. List does not have performance issues when selecting/deselecting/scrolling cards.
-
-Doing this task in typescript is welcome. However if you do not feel comfortable with typescript, please change file extension to js.
-
-Optional: Add functional / unit tests with testing library of your choice.
-
-Good luck and do not hesitate to ask in case of any questions!
-
----
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
