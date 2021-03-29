@@ -1,11 +1,9 @@
 import React from "react";
 
+import {PersonData} from "./types";
+
 type Props = {
-  data: {
-    firstNameLastName: string;
-    jobTitle: string;
-    emailAddress: string;
-  };
+  data: Omit<PersonData, "id">;
 };
 
 function PersonInfo(props: Props) {
