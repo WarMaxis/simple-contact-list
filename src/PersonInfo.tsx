@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./PersonInfo.css";
+
 import {PersonData} from "./types";
 
 type Props = {

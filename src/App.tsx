@@ -31,12 +31,12 @@ function App() {
         selected ? setSelected(prevState => prevState.filter(id => cardId !== id)) : setSelected(prevState => [...prevState, cardId])
     }, [])
 
-    const buttonPart = React.useMemo(() => <button className="button" onClick={() => fetchData(true)}>Load
-        more</button>, [fetchData]);
-
     React.useEffect(() => {
         fetchData();
     }, [fetchData]);
+
+    const buttonPart = React.useMemo(() => <button className="button" onClick={() => fetchData(true)}>Load
+        more</button>, [fetchData]);
 
     return (
         <div className="App">
